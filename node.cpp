@@ -27,3 +27,7 @@ return left;
 node* node::getRight() {
 return right;
 }
+
+vod node::setValue(int newValue) {
+    value = newValue;
+}

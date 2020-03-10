@@ -66,21 +66,56 @@ void insert(node* &root, int value) {
     
 }
 
-bool search(node* root, int value) {
+
+
+
+
+node* search(node* root, int value) {
     
     if(value == root->getValue()) {
-        return true;
+        return root;
     } else if(value < root->getValue()) {
         search(root->getLeft(), value);
     } else if(value > root->getValue()) {
         search(root->getRight(), value);
     }
-    return false;
+    return NULL;
     
 }
 
 
-void delete() {
+void delete(node* &root, int value) {
+    if(search(root,value) != NULL) {
+        
+        if(search(root,value) ->getLeft() == NULL && search(root,value)->getRight() == NULL) {
+            node* temp = search(root,value);
+            temp = NULL;
+        } else if((search(root,value)->getLeft() == NULL && search(root,value)->getRight() != NULL) || (search(root,value)->getLeft() != NULL && search(root,value)->getRight() == NULL)) {
+            if(root->getLeft() == NULL) {
+                node* temp = search(root,value);
+                int val = temp->getRight()->getValue();
+                temp->setValue(val);
+                temp->setRight(NULL);
+            } else {
+                node* temp = search(root,value);
+                int val = temp->getLeft()->getValue();
+                temp->setValue(val);
+                temp->setLeft(NULL);
+            }
+        } else {
+            node* temp = search(root,value);
+            while(temp->getLeft != NULL) {
+                temp = temp->getLeft();
+            }
+            int val = temp->getValue();
+            temp = NULL;
+            search(root,value) ->SetValue() = val;
+            
+        }
+        
+        
+        
+    }
     
 }
 
