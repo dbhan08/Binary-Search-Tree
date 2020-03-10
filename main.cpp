@@ -44,6 +44,40 @@ void parse(char* in, int* modif, int &count) {
 
 
 
+void insert(node* &root, int value) {
+    
+    if(root == NULL) {
+        root = new node(value);
+    } else if(value == root->getValue()) {
+        return;
+        
+    } else if(value < root->getValue()) {
+        insert(root->getLeft(),value)
+        
+    } else {
+        insert(root->getRight(),value);
+        
+        
+        
+    }
+    
+    
+    
+    
+}
+
+bool search(node* root, int value) {
+    
+    if(value == root->getValue()) {
+        return true;
+    } else if(value < root->getValue()) {
+        search(root->getLeft(), value);
+    } else if(value > root->getValue()) {
+        search(root->getRight(), value);
+    }
+    return false;
+    
+}
 
 
 void delete() {
