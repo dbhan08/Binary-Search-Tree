@@ -44,19 +44,29 @@ void parse(char* in, int* modif, int &count) {
 
 
 
-void insert(node* &root, int value) {
-    
+void insert(node* &root,node* head ,int value) {
+    node * temp = new node(value);
     if(root == NULL) {
         root = new node(value);
-    } else if(value == root->getValue()) {
+    } else if(value == head->getValue()) {
         return;
         
-    } else if(value < root->getValue()) {
-        insert(root->getLeft(),value)
+    } else if(value < head->getValue()) {
         
+        if(head->getLeft() == NULL) {
+            head->setLeft(temp);
+            
+        } else {
+        insert(root, head->getLeft(),value);
+        }
     } else {
-        insert(root->getRight(),value);
         
+        if(head->getRight() == NULL) {
+            head->setRight(temp);
+            
+        } else {
+        insert(root,head->getRight(),value);
+        }
         
         
     }
@@ -66,6 +76,19 @@ void insert(node* &root, int value) {
     
 }
 
+void visualize(node* root, int levels=0) {
+    if(root->getRight()) {
+        visualize(root->getRight(), levels +1);
+    }
+    for(int i = 0; i < levels; i++) {
+        cout << "\t ";
+    }
+    cout << root->getValue();
+    if(root->getLeft()) {
+        visualize(root->getLeft(),levels +1);
+    }
+    
+}
 
 
 
@@ -84,7 +107,7 @@ node* search(node* root, int value) {
 }
 
 
-void delete(node* &root, int value) {
+void remvove(node* &root, int value) {
     if(search(root,value) != NULL) {
         
         if(search(root,value) ->getLeft() == NULL && search(root,value)->getRight() == NULL) {
@@ -104,12 +127,12 @@ void delete(node* &root, int value) {
             }
         } else {
             node* temp = search(root,value);
-            while(temp->getLeft != NULL) {
+            while(temp->getLeft() != NULL) {
                 temp = temp->getLeft();
             }
             int val = temp->getValue();
             temp = NULL;
-            search(root,value) ->SetValue() = val;
+            search(root,value) ->setValue(val);
             
         }
         
@@ -128,7 +151,8 @@ int main() {
     
     
     // Just the input stuff
-    
+    node* root = new node(0);
+    root = NULL;
     int count = 0;
     int modif[100];
     char fileName[30];
@@ -150,6 +174,12 @@ int main() {
         cin.clear();
         cin.ignore(1000000, '\n');
         parse(in,modif,count);
+        
+        for(int i = 0; modif[i] != 0; i++) {
+            insert(root,root,modif[i]);
+        }
+        cout << root->getValue() << endl;
+        visualize(root,0);
         int size = sizeof(modif)/sizeof(modif[0]);
         
        
