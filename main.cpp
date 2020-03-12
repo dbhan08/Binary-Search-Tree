@@ -75,19 +75,22 @@ void insert(node* &root,node* head ,int value) {
     
     
 }
-
-void visualize(node* root, int levels=0) {
-    if(root->getRight()) {
-        visualize(root->getRight(), levels +1);
+// Concept for visualize function from Ali Fakhry
+void visualize(node* head, int depth=0)
+{
+    if(head->getRight())
+        visualize(head->getRight(), depth+1);
+    int temp = depth;
+    while(depth > 0) {
+        cout << "  ";
+        depth --;
     }
-    for(int i = 0; i < levels; i++) {
-        cout << "\t ";
-    }
-    cout << root->getValue();
-    if(root->getLeft()) {
-        visualize(root->getLeft(),levels +1);
-    }
+  
+    cout << head->getValue() << endl;
     
+    if(head->getLeft()) {
+        visualize(head->getLeft(), temp+1);
+    }
 }
 
 
@@ -178,7 +181,7 @@ int main() {
         for(int i = 0; modif[i] != 0; i++) {
             insert(root,root,modif[i]);
         }
-        cout << root->getValue() << endl;
+        //cout << root->getValue() << endl;
         visualize(root,0);
         int size = sizeof(modif)/sizeof(modif[0]);
         
@@ -209,6 +212,36 @@ int main() {
         
     } else {
         cout << "Enter a valid option!" << endl;
+    }
+    
+    
+    bool running = true;
+    while(running) {
+        cout << "Would you like to 'insert', 'delete', 'search', or quit?" << endl;
+        char inp[50];
+    cin.get(inp,50);
+    cin.clear();
+    cin.ignore(50,'\n');
+    if(strcmp(inp, "insert") == 0)  {
+        
+        
+        
+    } else if(strcmp(inp, "search") == 0) {
+        cout << "What would you like to search for" << endl;
+        
+    } else if(strcmp(inp, "delete") == 0) {
+        
+    } else if(strcmp(inp, "quit") == 0) {
+        
+        
+    } else {
+        cout << "Enter a valid option";
+        
+    }
+    
+    
+        
+        
     }
     
     

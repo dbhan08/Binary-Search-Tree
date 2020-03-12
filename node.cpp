@@ -28,6 +28,11 @@ node* node::getRight() {
 return right;
 }
 
-vod node::setValue(int newValue) {
+int node::getValue() {
+    return value;
+}
+
+
+void node::setValue(int newValue) {
     value = newValue;
 }

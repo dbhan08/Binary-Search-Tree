@@ -11,7 +11,7 @@ node(int value);
 ~node();
 node* getLeft();
 node* getRight();
-void setValue();
+void setValue(int value);
 int  getValue();
 void setLeft(node*);
 void setRight(node*);
