@@ -45,16 +45,16 @@ void parse(char* in, int* modif, int &count) {
 
 
 void insert(node* &root,node* head ,int value) {
-    node * temp = new node(value);
+   
     if(root == NULL) {
         root = new node(value);
-    } else if(value == head->getValue()) {
+    } else if(value == *head->getValue()) {
         return;
         
-    } else if(value < head->getValue()) {
+    } else if(value < *head->getValue()) {
         
         if(head->getLeft() == NULL) {
-            head->setLeft(temp);
+            head->setLeft(new node(value));
             
         } else {
         insert(root, head->getLeft(),value);
@@ -62,7 +62,7 @@ void insert(node* &root,node* head ,int value) {
     } else {
         
         if(head->getRight() == NULL) {
-            head->setRight(temp);
+            head->setRight(new node(value));
             
         } else {
         insert(root,head->getRight(),value);
@@ -86,7 +86,7 @@ void visualize(node* head, int depth=0)
         depth --;
     }
   
-    cout << head->getValue() << endl;
+    cout << *head->getValue() << endl;
     
     if(head->getLeft()) {
         visualize(head->getLeft(), temp+1);
@@ -97,48 +97,84 @@ void visualize(node* head, int depth=0)
 
 
 node* search(node* root, int value) {
-    
-    if(value == root->getValue()) {
+   
+    if(value == *root->getValue()) {
+       // cout << root->getValue() << "a" << endl;
         return root;
-    } else if(value < root->getValue()) {
-        search(root->getLeft(), value);
-    } else if(value > root->getValue()) {
-        search(root->getRight(), value);
-    }
-    return NULL;
     
+        
+        
+       
+    } else if(value < *root->getValue()) {
+       
+        if(root->getLeft() != NULL) {
+    
+        return search(root->getLeft(), value);
+        } else {
+            
+        
+            return NULL;
+                    }
+    } else if(value > *root->getValue() ) {
+        
+        
+        if(root->getRight() != NULL) {
+           
+       //      cout << root->getRight()->getValue() << "c" << endl;
+        return search(root->getRight(), value);
+            
+        } else {
+         
+          //  cout << "k" << endl;
+            return NULL;
+        }
+    } else {
+       
+        return NULL;
+    }
+ 
+
+ 
 }
 
 
+
+
+
+
+
+
 void remvove(node* &root, int value) {
-    if(search(root,value) != NULL) {
-        
-        if(search(root,value) ->getLeft() == NULL && search(root,value)->getRight() == NULL) {
-            node* temp = search(root,value);
-            temp = NULL;
-        } else if((search(root,value)->getLeft() == NULL && search(root,value)->getRight() != NULL) || (search(root,value)->getLeft() != NULL && search(root,value)->getRight() == NULL)) {
-            if(root->getLeft() == NULL) {
-                node* temp = search(root,value);
-                int val = temp->getRight()->getValue();
-                temp->setValue(val);
-                temp->setRight(NULL);
-            } else {
-                node* temp = search(root,value);
-                int val = temp->getLeft()->getValue();
-                temp->setValue(val);
-                temp->setLeft(NULL);
-            }
+ 
+    if(value == *root->getValue()) {
+        if(root->getLeft() == NULL && root->getRight() == NULL) {
+            root->setValue(0);
+        } else if(root->getLeft() != NULL && root->getRight() == NULL) {
+            node* temp = root->getLeft();
+            root->setValue(temp->getValue());
+            root->setRight(temp->getRight());
+            root->setLeft(temp->getLeft());
+            delete temp;
+        } else if(root->getLeft() == NULL && root->getRight() != NULL) {
+            node* temp = root->getRight();
+            root->setValue(temp->getValue());
+            root->setRight(temp->getRight());
+            root->setLeft(temp->getLeft());
+            delete temp;
+            
         } else {
-            node* temp = search(root,value);
-            while(temp->getLeft() != NULL) {
-                temp = temp->getLeft();
+            node* replace = root->getLeft();
+            node* parRep = root;
+            while(replace->getRight() != NULL) {
+                parRep = replace
+                replace = replace->getRight();
             }
-            int val = temp->getValue();
-            temp = NULL;
-            search(root,value) ->setValue(val);
+            
             
         }
-        
+        if(parRep == head) {
+            
+        }
         
         
     }
@@ -155,6 +191,8 @@ int main() {
     
     // Just the input stuff
     node* root = new node(0);
+    node* curr = new node(0);
+    curr = NULL;
     root = NULL;
     int count = 0;
     int modif[100];
@@ -223,19 +261,54 @@ int main() {
     cin.clear();
     cin.ignore(50,'\n');
     if(strcmp(inp, "insert") == 0)  {
+        cout << "What would you like to Insert" << endl;
+        char inp[100];
+        cin.get(inp,100);
+        cin.clear();
+        cin.ignore(100,'\n');
+        int a = atoi(inp);
+        insert(root,root,a);
+        visualize(root,0);
+
         
         
         
     } else if(strcmp(inp, "search") == 0) {
         cout << "What would you like to search for" << endl;
+        char inp[100];
+        cin.get(inp,100);
+        cin.clear();
+        cin.ignore(100,'\n');
+        int a = atoi(inp);
+        
+      //  cout << *root->getValue() << endl;
+        
+      //  cout << *search(root,a) ->getValue() << "l" << endl;
+     //   cout << search(root,a) << "n" << endl;
+      
+        if( search(root,a) != NULL) {
+          
+            cout << "The number was found!" << endl;
+        } else {
+          //  cout << search(root,a) << endl;
+            cout << "Number not in tree!" << endl;
+        }
+        
+        //  cout << root->getValue()  << "z" << endl;
         
     } else if(strcmp(inp, "delete") == 0) {
+        char inp[100];
+        cin.get(inp,100);
+        cin.clear();
+        cin.ignore(100,'\n');
+        
         
     } else if(strcmp(inp, "quit") == 0) {
+        running = false;
         
         
     } else {
-        cout << "Enter a valid option";
+        cout << "Enter a valid option" << endl;;
         
     }
     
@@ -244,7 +317,7 @@ int main() {
         
     }
     
-    
+   
     
     
     

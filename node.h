@@ -12,7 +12,7 @@ node(int value);
 node* getLeft();
 node* getRight();
 void setValue(int value);
-int  getValue();
+int*  getValue();
 void setLeft(node*);
 void setRight(node*);
 
