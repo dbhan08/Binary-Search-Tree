@@ -137,7 +137,31 @@ node* search(node* root, int value) {
  
 }
 
-
+node* findAbove(node* root, node* find) {
+    if(root->getLeft() == find || root->getRight() == find) {
+        return root;
+    } else if(*root->getValue() > *find->getValue()) {
+        if(root->getLeft()) {
+            return findAbove(root->getLeft(),find);
+        } else {
+            return NULL;
+        }
+        
+        
+    } else if(*root->getValue() < *find->getValue()) {
+        if(root->getRight()) {
+            return findAbove(root->getRight(),find);
+        } else {
+            return NULL;
+        }
+        
+    } else {
+        return NULL;
+    }
+    
+    
+    
+}
 
 
 
@@ -151,13 +175,13 @@ void remvove(node* &root, int value) {
             root->setValue(0);
         } else if(root->getLeft() != NULL && root->getRight() == NULL) {
             node* temp = root->getLeft();
-            root->setValue(temp->getValue());
+            root->setValue(*(temp->getValue()));
             root->setRight(temp->getRight());
             root->setLeft(temp->getLeft());
             delete temp;
         } else if(root->getLeft() == NULL && root->getRight() != NULL) {
             node* temp = root->getRight();
-            root->setValue(temp->getValue());
+            root->setValue(*(temp->getValue()));
             root->setRight(temp->getRight());
             root->setLeft(temp->getLeft());
             delete temp;
@@ -166,18 +190,76 @@ void remvove(node* &root, int value) {
             node* replace = root->getLeft();
             node* parRep = root;
             while(replace->getRight() != NULL) {
-                parRep = replace
+                parRep = replace;
                 replace = replace->getRight();
             }
+            if(parRep == root) {
+                root->setLeft(replace->getLeft());
+            } else {
+                parRep->setRight(replace->getLeft());
+            }
+            root->setValue(*replace->getValue());
             
             
         }
-        if(parRep == head) {
-            
-        }
-        
+  
+        return;
         
     }
+    node* parent = findAbove(root,search(root,value));
+    int side = 0;
+    if(parent != NULL) {
+        node* temp = NULL;
+        if(parent->getLeft() == search(root,value)) {
+            side = 1;
+            temp = parent->getLeft();
+            
+        } else {
+            temp = parent->getRight();
+        
+        }
+        
+        
+        if(temp->getLeft() == NULL && temp->getRight() == NULL) {
+            if(side == 1) {
+                parent->setLeft(NULL);
+            } else {
+                parent->setRight(NULL);
+                delete temp;
+            }
+              delete temp;
+            
+        } else if(temp->getLeft() != NULL && temp->getRight == NULL) {
+            
+            if(side == 1) {
+                parent->setLeft(temp->getLeft());
+            } else {
+                parent->setRight(NULL);
+                delete temp;
+            }
+            delete temp;
+            
+        } else if(temp->getLeft() == NULL && temp->getRight != NULL) {
+            
+            if(side == 1) {
+                parent->setLeft(temp->getRight());
+            } else {
+                parent->setRight(temp->getRight());
+                delete temp;
+            }
+            delete temp;
+        } else {
+            
+        }
+        
+        
+        
+        
+    } else {
+        cout << "Value is not in tree!" << endl;
+    }
+    
+    
     
 }
 

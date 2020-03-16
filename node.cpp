@@ -8,6 +8,15 @@ value = newValue;
 left = NULL;
 right = NULL;
 
+    
+}
+
+
+node::~node() {
+   
+    delete left;
+    delete right;
+    
 }
 
 void node::setLeft(node* newLeft) {
