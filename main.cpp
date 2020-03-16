@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstring>
 #include <fstream>
+#include<cstdlib>
 
 using namespace std;
 
@@ -78,19 +79,35 @@ void insert(node* &root,node* head ,int value) {
 // Concept for visualize function from Ali Fakhry
 void visualize(node* head, int depth=0)
 {
-    if(head->getRight())
-        visualize(head->getRight(), depth+1);
+    if(head->getRight() != NULL) {
+        //   cout << "a" << endl;
+      //  cout << head->getRight() << endl;
+         visualize(head->getRight(), depth+1);
+     
+    }
+   // cout << "d" << endl;
     int temp = depth;
+
     while(depth > 0) {
         cout << "  ";
         depth --;
     }
-  
+    if(head != NULL) {
+      
     cout << *head->getValue() << endl;
-    
-    if(head->getLeft()) {
-        visualize(head->getLeft(), temp+1);
+   //    cout << "b" << endl;
+   
     }
+   
+    if(head->getLeft() != NULL) {
+// cout << "c" << endl;
+       visualize(head->getLeft(), temp+1);
+       
+
+    }
+    
+    
+   // cout << "kms" << endl;
 }
 
 
@@ -98,6 +115,7 @@ void visualize(node* head, int depth=0)
 
 node* search(node* root, int value) {
    
+    if(root != NULL) {
     if(value == *root->getValue()) {
        // cout << root->getValue() << "a" << endl;
         return root;
@@ -132,12 +150,15 @@ node* search(node* root, int value) {
        
         return NULL;
     }
- 
+    } else {
+        return NULL;
+    }
 
  
 }
 
 node* findAbove(node* root, node* find) {
+    if(find != NULL && root != NULL) {
     if(root->getLeft() == find || root->getRight() == find) {
         return root;
     } else if(*root->getValue() > *find->getValue()) {
@@ -159,7 +180,9 @@ node* findAbove(node* root, node* find) {
         return NULL;
     }
     
-    
+    } else {
+        return NULL;
+    }
     
 }
 
@@ -168,8 +191,11 @@ node* findAbove(node* root, node* find) {
 
 
 
-void remvove(node* &root, int value) {
- 
+
+        
+        
+void remove(node* &root, int value) {
+    
     if(value == *root->getValue()) {
         if(root->getLeft() == NULL && root->getRight() == NULL) {
             root->setValue(0);
@@ -178,13 +204,13 @@ void remvove(node* &root, int value) {
             root->setValue(*(temp->getValue()));
             root->setRight(temp->getRight());
             root->setLeft(temp->getLeft());
-            delete temp;
+        free(temp);
         } else if(root->getLeft() == NULL && root->getRight() != NULL) {
             node* temp = root->getRight();
             root->setValue(*(temp->getValue()));
             root->setRight(temp->getRight());
             root->setLeft(temp->getLeft());
-            delete temp;
+           free(temp);
             
         } else {
             node* replace = root->getLeft();
@@ -199,13 +225,15 @@ void remvove(node* &root, int value) {
                 parRep->setRight(replace->getLeft());
             }
             root->setValue(*replace->getValue());
+            free(replace);
             
             
         }
-  
+        
         return;
         
     }
+
     node* parent = findAbove(root,search(root,value));
     int side = 0;
     if(parent != NULL) {
@@ -216,7 +244,7 @@ void remvove(node* &root, int value) {
             
         } else {
             temp = parent->getRight();
-        
+            
         }
         
         
@@ -225,30 +253,51 @@ void remvove(node* &root, int value) {
                 parent->setLeft(NULL);
             } else {
                 parent->setRight(NULL);
-                delete temp;
+              
             }
-              delete temp;
+            free(temp);
             
-        } else if(temp->getLeft() != NULL && temp->getRight == NULL) {
+        } else if(temp->getLeft() != NULL && temp->getRight() == NULL) {
             
             if(side == 1) {
                 parent->setLeft(temp->getLeft());
             } else {
-                parent->setRight(NULL);
-                delete temp;
+              
+
+                parent->setRight(temp->getLeft());
+               
             }
-            delete temp;
             
-        } else if(temp->getLeft() == NULL && temp->getRight != NULL) {
+  
+            
+            free(temp);
+            cout << *parent->getRight()->getValue() << endl;
+        } else if(temp->getLeft() == NULL && temp->getRight() != NULL) {
             
             if(side == 1) {
                 parent->setLeft(temp->getRight());
             } else {
                 parent->setRight(temp->getRight());
-                delete temp;
+                
             }
-            delete temp;
+          free(temp);
         } else {
+            
+            node* replace = temp->getLeft();
+            node* parRep = temp;
+            while(replace->getRight() != NULL) {
+                parRep = replace;
+                replace = replace->getRight();
+            }
+            
+            if(parRep == temp) {
+                parRep->setLeft(replace->getLeft());
+            } else {
+                parRep->setRight(replace->getLeft());
+            }
+            
+            temp->setValue(*replace->getValue());
+            free(replace);
             
         }
         
@@ -383,6 +432,10 @@ int main() {
         cin.get(inp,100);
         cin.clear();
         cin.ignore(100,'\n');
+        int a = atoi(inp);
+        remove(root,a);
+       
+        visualize(root,0);
         
         
     } else if(strcmp(inp, "quit") == 0) {
