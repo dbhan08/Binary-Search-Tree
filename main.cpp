@@ -10,6 +10,7 @@
 #include <cstring>
 #include <fstream>
 #include<cstdlib>
+#include <iomanip>
 
 using namespace std;
 
@@ -93,6 +94,7 @@ void insert(node* &root,node* head ,int value) {
 // Ali helped me with this particular block of code
 void visualize(node* head, int depth=0)
 {
+    if(head != NULL ) {
     if(head->getRight() != NULL) {
         //   cout << "a" << endl;
       //  cout << head->getRight() << endl;
@@ -119,7 +121,7 @@ void visualize(node* head, int depth=0)
        
 
     }
-    
+    }
     
    // cout << "kms" << endl;
 }
@@ -382,7 +384,7 @@ int main() {
         }
         //cout << root->getValue() << endl;
         visualize(root,0);
-        int size = sizeof(modif)/sizeof(modif[0]);
+       // int size = sizeof(modif)/sizeof(modif[0]);
         
        
         
@@ -401,9 +403,15 @@ int main() {
             file.read(input, size);
             file.close();
             parse(input,modif,count);
+            for(int i = 0; modif[i] != 0; i++) {
+                insert(root,root,modif[i]);
+            }
+              visualize(root,0);
+            //cout << root->ge
             
             
-            int size = sizeof(modif)/sizeof(modif[0]);
+            
+            // int size = sizeof(modif)/sizeof(modif[0]);
             
             
         }
