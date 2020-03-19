@@ -1,8 +1,16 @@
+
+/*
+ Following is the cpp file for the node class
+ By :Deyvik Bhan
+ 3/09/20
+ */
+
 #include "node.h"
 #include <iostream>
 
 using namespace std;
 
+// Constructor
 node::node(int newValue) {
 value = newValue;
 left = NULL;
@@ -18,30 +26,30 @@ node::~node() {
     delete right;
     
 }
-
+// Sets left node
 void node::setLeft(node* newLeft) {
 left = newLeft;
 
 }
-
+// Sets right node
 void node::setRight(node* newRight) {
 right = newRight;
 
 }
-
+// Returns left node
 node* node::getLeft() {
 return left;
 }
-
+// Returns right node
 node* node::getRight() {
 return right;
 }
-
+// Returns value of node
 int* node::getValue() {
     return &value;
 }
 
-
+// A way of changing the value of a node
 void node::setValue(int newValue) {
     value =  newValue;
 }

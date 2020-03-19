@@ -1,3 +1,10 @@
+/*
+ Following program is a binary search tree in which a user can input numbers into the tree, delete them, and search for  them
+ By :Deyvik Bhan
+ 3/09/20
+ */
+
+
 #include "node.h"
 #include <iostream>
 #include <cstring>
@@ -44,28 +51,35 @@ void parse(char* in, int* modif, int &count) {
 
 
 
-
+// Following function inserts into the tree
 void insert(node* &root,node* head ,int value) {
-   
+   // If tree is empty
     if(root == NULL) {
+        // Make it a new node
         root = new node(value);
     } else if(value == *head->getValue()) {
+        // If value is already in tree no need for another node
         return;
         
     } else if(value < *head->getValue()) {
+        // If new value is less then the current nodes value
         
         if(head->getLeft() == NULL) {
+            // If the left is not null, make a new node with the given value
             head->setLeft(new node(value));
             
         } else {
+            // Transverse to the less
         insert(root, head->getLeft(),value);
         }
     } else {
-        
+        //If given value is greater then current nodes value
         if(head->getRight() == NULL) {
+            // If the right node is null make new node of the given value
             head->setRight(new node(value));
             
         } else {
+            // Transverse to the right
         insert(root,head->getRight(),value);
         }
         
@@ -76,7 +90,7 @@ void insert(node* &root,node* head ,int value) {
     
     
 }
-// Concept for visualize function from Ali Fakhry
+// Ali helped me with this particular block of code
 void visualize(node* head, int depth=0)
 {
     if(head->getRight() != NULL) {
@@ -112,11 +126,13 @@ void visualize(node* head, int depth=0)
 
 
 
-
+// Following function searches the tree and wfinds the value
 node* search(node* root, int value) {
    
     if(root != NULL) {
+        // If the tree is not empty
     if(value == *root->getValue()) {
+        // If the current node has the same value as the value being searched for return the current node(node found)
        // cout << root->getValue() << "a" << endl;
         return root;
     
@@ -124,25 +140,28 @@ node* search(node* root, int value) {
         
        
     } else if(value < *root->getValue()) {
+        // If value being searched for is less then the current nodes value
        
         if(root->getLeft() != NULL) {
+            // If there is a left node transverse to that node and check if it is equal
     
         return search(root->getLeft(), value);
         } else {
-            
+            // There is no node that matches the value
         
             return NULL;
                     }
     } else if(value > *root->getValue() ) {
+        // If the value being searched for is greater then the current nodes value
         
         
         if(root->getRight() != NULL) {
-           
+           // If there is a right node transverse to that node and call the function
        //      cout << root->getRight()->getValue() << "c" << endl;
         return search(root->getRight(), value);
             
         } else {
-         
+         // There is no node that matches the values
           //  cout << "k" << endl;
             return NULL;
         }
@@ -156,8 +175,9 @@ node* search(node* root, int value) {
 
  
 }
-
+// Following function is used to find the parent, which is used in the delte function. Functions basically the exact same as the search functin
 node* findAbove(node* root, node* find) {
+    
     if(find != NULL && root != NULL) {
     if(root->getLeft() == find || root->getRight() == find) {
         return root;
@@ -195,17 +215,20 @@ node* findAbove(node* root, node* find) {
         
         
 void remove(node* &root, int value) {
-    
+    // If the value to be deleted is the root
     if(value == *root->getValue()) {
+        // If the only node is the root set the root to null
         if(root->getLeft() == NULL && root->getRight() == NULL) {
             root->setValue(0);
         } else if(root->getLeft() != NULL && root->getRight() == NULL) {
+            // If the left is the only child, make the left child the root
             node* temp = root->getLeft();
             root->setValue(*(temp->getValue()));
             root->setRight(temp->getRight());
             root->setLeft(temp->getLeft());
         free(temp);
         } else if(root->getLeft() == NULL && root->getRight() != NULL) {
+            // If the only child is the right make it the root
             node* temp = root->getRight();
             root->setValue(*(temp->getValue()));
             root->setRight(temp->getRight());
@@ -213,6 +236,8 @@ void remove(node* &root, int value) {
            free(temp);
             
         } else {
+            // If there are two childs find the next closest value, can be done in two ways. Either the value is the closest number greater then the root or the closest number les then the root. In this code it will be the closest number less then the root.
+            // Below code replaces the root with the cclosest value
             node* replace = root->getLeft();
             node* parRep = root;
             while(replace->getRight() != NULL) {
@@ -233,8 +258,11 @@ void remove(node* &root, int value) {
         return;
         
     }
-
-    node* parent = findAbove(root,search(root,value));
+// For values that are not the root
+    node* parent = findAbove(root,search(root,value)); // The parent node for the value being found
+    
+    
+    // Finds if the node to be deleted is from the left or right side of the parent node
     int side = 0;
     if(parent != NULL) {
         node* temp = NULL;
@@ -247,7 +275,7 @@ void remove(node* &root, int value) {
             
         }
         
-        
+        // If the node to be deleted has no children
         if(temp->getLeft() == NULL && temp->getRight() == NULL) {
             if(side == 1) {
                 parent->setLeft(NULL);
@@ -256,7 +284,7 @@ void remove(node* &root, int value) {
               
             }
             free(temp);
-            
+            // If the node to be deleted has only a left node
         } else if(temp->getLeft() != NULL && temp->getRight() == NULL) {
             
             if(side == 1) {
@@ -271,7 +299,8 @@ void remove(node* &root, int value) {
   
             
             free(temp);
-            cout << *parent->getRight()->getValue() << endl;
+           // cout << *parent->getRight()->getValue() << endl;
+            // If thee is only a right child
         } else if(temp->getLeft() == NULL && temp->getRight() != NULL) {
             
             if(side == 1) {
@@ -281,8 +310,9 @@ void remove(node* &root, int value) {
                 
             }
           free(temp);
+            // Below is if there is two children of the node to be deleted
         } else {
-            
+            // This is excecuted similary to the code above form replacing the root if it has two children
             node* replace = temp->getLeft();
             node* parRep = temp;
             while(replace->getRight() != NULL) {
@@ -319,7 +349,7 @@ void remove(node* &root, int value) {
 // Majority of my main function taken from heap project. Also includes code from Omar and the calling of a function provided by Stefan Ene's heap
 int main() {
     
-    
+    // The main function jsut takes care of basic input stuff
     // Just the input stuff
     node* root = new node(0);
     node* curr = new node(0);
