@@ -24,11 +24,13 @@ int*  getValue();
 void setLeft(node*);
 void setRight(node*);
 
+
 private:
     // All the essential variables
 node* left;
 node* right;
 int value;
+
 
 };
 

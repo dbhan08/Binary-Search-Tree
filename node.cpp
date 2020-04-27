@@ -53,3 +53,5 @@ int* node::getValue() {
 void node::setValue(int newValue) {
     value =  newValue;
 }
+
+
